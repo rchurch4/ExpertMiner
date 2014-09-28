@@ -7,7 +7,7 @@ $(document).ready(function () {
 	// Add a term to the query when "Add" button is clicked
 	$("#add_button").click(function (event) {
 		// Gets the text from the form object
-		var input = $("#query").val();
+		var input = $("#id_query").val();
 		// Checks to see if the input is valid
 		if (input.length > 0 && input != "" && input != " " && input != "-1") {
 			// Checks to see if the term has already been added
@@ -23,7 +23,7 @@ $(document).ready(function () {
 				// Updates the HTML
 				$("#queries").html(arg_string);
 				// Makes the searchbear empty
-				$("#query").val("");
+				$("#id_query").val("");
 			}
 			else {
 				// Makes a pop-up if term already exists
@@ -74,11 +74,20 @@ $(document).ready(function () {
 
 	$("#search_button").click(function (event) {
 		if (queries.length > 0) {
-			alert('Would search on '+queries.length+' queries.');
-			//$('form[name="searchbear"').submit(queries, event);
+			//alert('Would search on '+queries.length+' queries.');
+			var x = "";
+			for (var i = 0; i < queries.length; i++) {
+				if (queries[i].length < 50 & queries[i].indexOf('.') === -1 & queries[i].indexOf(',') === -1 & queries[i].indexOf('\'') === -1 
+					& queries[i].indexOf('"') === -1 & queries[i].indexOf('(') === -1 & queries[i].indexOf(')') === -1 & queries[i].indexOf('*') === -1) {
+					x += queries[i]+",";
+				}
+			}
+			x += "end";
+			$("#id_query").val(x);
 		} else {
 			alert("Empty Search is Invalid");
+			event.preventDefault();
 		}
-		event.preventDefault();
+		//event.preventDefault();
 	});
 });

@@ -37,13 +37,14 @@ form {
 	left:300px;
 }
 
-#query {
+#id_query {
 	border:1px solid black;
 	box-shadow: 2px 2px 0px gray;
 	border-radius: 10px;
 	font-size: 16px;
 	height: 30px;
 	width: 550px;
+	text-indent: 10px;
 	font-family: 'Open Sans Condensed', sans-serif;
 }
 
