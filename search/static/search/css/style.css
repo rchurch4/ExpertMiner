@@ -75,6 +75,7 @@ form {
 }
 
 button {
+	margin-top:5px;
 	border:1px solid black;
 	box-shadow: 2px 2px 0px gray;
 	border-radius: 10px;
@@ -109,3 +110,16 @@ input:active {
 	background: red;
 	color: white;
 }
+
+#authorlist {
+	position: absolute;
+	left: 200px;
+	top: 100px;
+}
+
+#authorlist li {
+	font-family: 'Open Sans Condensed', sans-serif;
+	color: black;
+	font-size: 20pt;
+}
+

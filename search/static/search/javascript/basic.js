@@ -1,5 +1,5 @@
 var queries = [];
-var starting_arg_string = "<button type='button' class='term' name='0'>Reset</button> or Click to Remove: ";
+var starting_arg_string = "<button type='button' class='term' name='0'>Reset</button> or Click to Remove: <br>";
 var arg_string = starting_arg_string;
 
 $(document).ready(function () {
@@ -9,7 +9,8 @@ $(document).ready(function () {
 		// Gets the text from the form object
 		var input = $("#id_query").val();
 		// Checks to see if the input is valid
-		if (input.length > 0 && input != "" && input != " " && input != "-1") {
+		if (input.length > 0 && input != "" && input != " " && input != "-1" & input.length < 50 & input.indexOf('.') === -1 & input.indexOf(',') === -1 & input.indexOf('\'') === -1 
+					& input.indexOf('"') === -1 & input.indexOf('(') === -1 & input.indexOf(')') === -1 & input.indexOf('*') === -1) {
 			// Checks to see if the term has already been added
 			if (queries.indexOf(input) == -1) {
 				// Checks to see whether there are already terms in the query. If not, adds the Reset button to the beginning of the HTML
@@ -19,7 +20,7 @@ $(document).ready(function () {
 				// Adds the newest term to the query
 				queries[queries.length] = input;
 				// Adds a button corresponding to the newest term to the HTML
-				arg_string += "<button type='button' class='term' name='"+ (queries.length) + "'>"+input+"</button>" + " ";
+				arg_string += "<button type='button' class='term' name='"+ (queries.length) + "'>"+input+"</button>" + "<br> ";
 				// Updates the HTML
 				$("#queries").html(arg_string);
 				// Makes the searchbear empty
@@ -32,7 +33,7 @@ $(document).ready(function () {
 		}
 		else {
 			// Makes a pop-up if term is invalid
-			alert ("Input Invalid");
+			alert ("Input Invalid, A-Z, 1-9 only. Terms can be no bigger than 50 characters");
 		}
 		// Not really needed, just keeps the click from doing anything unexpected.
 		event.preventDefault();
@@ -59,7 +60,7 @@ $(document).ready(function () {
 			for(var i = 0; i < queries.length; i++) {
 				if (queries[i] != -1) {
 					temp[temp.length] = queries[i];
-					arg_string += "<button type='button' class='term' name='"+ temp.length + "'>"+queries[i]+"</button>" + " ";
+					arg_string += "<button type='button' class='term' name='"+ temp.length + "'>"+queries[i]+"</button>" + "<br> ";
 				}
 			}
 			// Replace the old array with the new one

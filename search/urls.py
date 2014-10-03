@@ -8,4 +8,5 @@ from search import views
 urlpatterns = patterns('',
 	url(r'^$', views.index, name="index"),
 	url(r'^results/', views.results, name='results'),
+	url(r'^authors/', views.authorlist, name='authors'),
 )
