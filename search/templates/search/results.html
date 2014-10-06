@@ -20,4 +20,8 @@
 	{% endfor %}
 	</ul>
 	<h2> Your search returned: </h2>
-	<h3><a href='http://www.cs.bu.edu/~evimaria/'>Evimaria Terzi</a></h3>
+	<ul>
+	{% for term in returned_list %}
+		<li>{{ term.name }}</li>
+	{% endfor %}
+	</ul>

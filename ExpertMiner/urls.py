@@ -8,6 +8,7 @@ urlpatterns = [
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'search.views.index', name='index'),
+    url(r'^authors/', 'search.views.author_index', name='authors_index'),
     url(r'^search/', include('search.urls', namespace='search')),
 ]
 

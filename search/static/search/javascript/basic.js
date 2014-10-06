@@ -80,14 +80,22 @@ $(document).ready(function () {
 			for (var i = 0; i < queries.length; i++) {
 				if (queries[i].length < 50 & queries[i].indexOf('.') === -1 & queries[i].indexOf(',') === -1 & queries[i].indexOf('\'') === -1 
 					& queries[i].indexOf('"') === -1 & queries[i].indexOf('(') === -1 & queries[i].indexOf(')') === -1 & queries[i].indexOf('*') === -1) {
-					x += queries[i]+",";
+					x += queries[i]+" ";
 				}
 			}
-			x += "end";
 			$("#id_query").val(x);
 		} else {
-			alert("Empty Search is Invalid");
-			event.preventDefault();
+			// Gets the text from the form object
+			var input = $("#id_query").val();
+			// Checks to see if the input is valid
+			if (input.length > 0 & input != "" & input != " " & input != "-1" & input.length < 50 & input.indexOf('.') === -1 & input.indexOf(',') === -1 & input.indexOf('\'') === -1 
+						& input.indexOf('"') === -1 & input.indexOf('(') === -1 & input.indexOf(')') === -1 & input.indexOf('*') === -1) {
+				var x = input;
+				$("#id_query").val(x);
+			} else {
+				alert("Empty Searches not allowed.");
+				event.preventDefault();
+			}
 		}
 		//event.preventDefault();
 	});

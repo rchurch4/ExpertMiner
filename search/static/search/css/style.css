@@ -13,10 +13,35 @@
 	color: white;
 	position: absolute;
 	left: 15px;
-	height: 40px;
+	top: 0px;
+	height: 35px;
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Open Sans Condensed', sans-serif;
+}
+
+#keysearch, #authsearch {
+	float: left;
+	color: white;
+	position: absolute;
+	top: 10px;
+	height: 35px;
 	margin: -5px;
 	padding: 0px;
 	font-family: 'Open Sans Condensed', sans-serif;
+	text-decoration: none;
+}
+
+#keysearch {
+	left: 300px;
+}
+
+#authsearch {
+	left: 500px;
+}
+
+#keysearch:hover, #authsearch:hover {
+	text-decoration: underline;
 }
 
 #top h5 {

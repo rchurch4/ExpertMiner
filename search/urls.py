@@ -7,6 +7,8 @@ from search import views
 
 urlpatterns = patterns('',
 	url(r'^$', views.index, name="index"),
-	url(r'^results/', views.results, name='results'),
-	url(r'^authors/', views.authorlist, name='authors'),
+	url(r'^keyword_search/', views.results, name='keyword search'),
+	url(r'^author_list/', views.authorlist, name='authors'),
+	url(r'^author_search/', views.author_search, name='author search'),
+	#url(r'^author_index/', views.author_index, name ='author index'),
 )
