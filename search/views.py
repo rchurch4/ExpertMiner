@@ -22,8 +22,8 @@ def results(request):
 		if form.is_valid():
 			query_list = []
 			query = form.cleaned_data['query']
-			print query
-			print
+			# print query
+			# print
 			query_list = query.split()
 			author_list = sql.search_for_keywords(query_list)
 			# Search the database of people on query_list
@@ -44,3 +44,6 @@ def author_search(request):
 def authorlist(request):
 	author_list = sql.get_first_100_authors()
 	return render(request, 'search/authorlist.html', {'author_list':author_list})
+
+def author_profile(request):
+	return None

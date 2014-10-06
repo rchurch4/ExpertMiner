@@ -29,10 +29,10 @@ def search_for_keywords (keys):
 	for k in keys:
 		x += '\'' + k + '\', '
 	x = x[:len(x)-2]
-	print x
-	print
+	# print x
+	# print
 
 	query = "select distinct auth.name from author as auth inner join authkeyword as ak on ak.auth_id = auth.id inner join keyword on keyword.id = ak.key_id where keyword.keyword in ("+ x +") limit 100"
-	print query
+	# print query
 	cursor.execute(query)
 	return dictfetchall(cursor)

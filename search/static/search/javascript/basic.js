@@ -88,7 +88,7 @@ $(document).ready(function () {
 			// Gets the text from the form object
 			var input = $("#id_query").val();
 			// Checks to see if the input is valid
-			if (input.length > 0 & input != "" & input != " " & input != "-1" & input.length < 50 & input.indexOf('.') === -1 & input.indexOf(',') === -1 & input.indexOf('\'') === -1 
+			if (input.length > 0 & input != "" & input != " " & input != "-1" & input.length < 150 & input.indexOf('.') === -1 & input.indexOf(',') === -1 & input.indexOf('\'') === -1 
 						& input.indexOf('"') === -1 & input.indexOf('(') === -1 & input.indexOf(')') === -1 & input.indexOf('*') === -1) {
 				var x = input;
 				$("#id_query").val(x);
