@@ -148,3 +148,20 @@ input:active {
 	font-size: 20pt;
 }
 
+#info {
+	position: absolute;
+	left: 200px;
+	top: 100px;
+}
+
+#info h1, h2 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	color: black;
+}
+
+#info li {
+	font-family: 'Open Sans Condensed', sans-serif;
+	color: black;
+	font-size: 20pt;
+}
+

@@ -46,4 +46,4 @@ def authorlist(request):
 	return render(request, 'search/authorlist.html', {'author_list':author_list})
 
 def author_profile(request):
-	return None
+	return render(request, 'search/authorprofile.html', {})

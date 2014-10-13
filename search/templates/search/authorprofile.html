@@ -12,14 +12,20 @@
 	<div id='top'>
 		<h1>Boston University</h1>
 		<h2><a id = 'keysearch' href='/'>Search by Keywords</a></h2>
-		<h2><a id = 'authsearch' href='authors/'>Search by Author Name</a></h2>
+		<h2><a id = 'authsearch' href='/authors/'>Search by Author Name</a></h2>
 		<h5>Designed by Rob Churchill &amp; Behzad Golshan</h5>
 	</div>
-	<br>
-	<form name="seachbear" action="../author_search/" method="POST">
-		{% csrf_token %}
-		{{ form }}
-		<input id="search_button" type="submit" value="Search"></input>
-	</form>
-	
-</body>
+
+	<div id='info'>
+		<h1>Author Name Here</h1>
+		<h2>Top Keywords</h2>
+		<ul>
+			<li>Keyword 1</li>
+			<li>Keyword 2</li>
+		</ul>
+		<h2>List of Papers</h2>
+		<ul>
+			<li>Paper 1</li>
+			<li>Paper 2</li>
+		</ul>
+	</div>
