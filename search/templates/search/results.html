@@ -22,6 +22,6 @@
 	<h2> Your search returned: </h2>
 	<ul>
 	{% for term in returned_list %}
-		<li>{{ term.name }}</li>
+		<li><a href = '../author_profile/{{term.id}}/'> {{ term.name }}{% if term.score %}, {{term.score}} {% endif %} </a></li>
 	{% endfor %}
 	</ul>

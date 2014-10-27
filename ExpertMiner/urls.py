@@ -13,6 +13,6 @@ urlpatterns = [
     url(r'^keyword_search/', 'search.views.results', name='keyword search'),
 	url(r'^author_list/', 'search.views.authorlist', name='authors'),
 	url(r'^author_search/', 'search.views.author_search', name='author search'),
-	url(r'^author_profile/', 'search.views.author_profile', name='author profile'),
+	url(r'^author_profile/[0-9]{6}/', 'search.views.author_profile', name='author profile'),
 ]
 
