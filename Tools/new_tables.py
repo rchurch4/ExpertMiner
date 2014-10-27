@@ -9,7 +9,7 @@ try:
 
     cur = con.cursor()
     cur.execute('drop table if exists `keyword`;')
-    cur.execute('create table `keyword` (`id` int(11) NOT NULL, `keyword` varchar(25),'
+    cur.execute('create table `keyword` (`id` int(11) NOT NULL, `keyword` varchar(100), `freq` int(8) default 0,'
                 'primary key (`id`), INDEX(keyword));')
     cur.execute('drop table if exists `authkeyword`;')
     cur.execute('create table `authkeyword` (`auth_id` int(11) NOT NULL,'
@@ -21,7 +21,7 @@ try:
                 'primary key(`auth_id`, `bigram_id`));')
     cur.execute('drop table if exists `bigram`;')
     cur.execute('create table `bigram` (`id` int(11) NOT NULL,'
-                '`bigram` varchar(50), primary key(`id`), INDEX(bigram));')
+                '`bigram` varchar(100), primary key(`id`), INDEX(bigram));')
     con.commit()
     cur.execute('select id1, title from authorship join author on '
             'authorship.id1 = author.id join paper on authorship.id2'
@@ -59,6 +59,7 @@ try:
                  cur.execute('insert into authkeyword values (' + 
                      str(author_id) + ', ' + str(keyword_id) + ', 1)'
                      'on duplicate key update freq = freq + 1;')
+                 cur.execute('update keyword set freq = freq+1 where id = ' + str(keyword_id) +';')
              else:
                  keyword_id = max_id
                  keywords[stem_token] = max_id
@@ -66,14 +67,14 @@ try:
                      str(author_id) + ', ' + str(keyword_id) + ', 1)'
                      'on duplicate key update freq = freq + 1;')
                  cur.execute('insert into keyword values (' + str(max_id) + 
-                     ', \'' + stem_token + '\');')
+                     ', \'' + stem_token + '\', 1);')
                  max_id = max_id + 1
        # --------- for bigrams -----------------
        for i in range(0, len(tokens) - 1):
            token1 = stem(regex.sub('', tokens[i])).lower()
            token2 = stem(regex.sub('', tokens[i+1])).lower()
            if token1 not in stop and token2 not in stop and token1 != '' and token2 != '':
-             stem_token = token1 + token2
+             stem_token = token1 + '$' + token2
              if stem_token in bigrams:
                  bigram_id = bigrams[stem_token]
                  cur.execute('insert into authbigram values (' + 
