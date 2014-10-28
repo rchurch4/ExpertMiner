@@ -54,33 +54,33 @@ def search_for_keywords (keys, bigrams):
 					select 
 					auth.name,
 					auth.id,
-					count(freq) as score
+					count(ak.freq) as score
 
 					from author as auth
-					inner join authkeyword as ak on ak.auth_id = auth.id
-					inner join keyword as kw on kw.id = ak.key_id
+					inner join freqauthkeywords as ak on ak.auth_id = auth.id
+					inner join freqkeywords as kw on kw.id = ak.key_id
 
 					where kw.keyword in ("""+x+""")
 
 					group by auth.name, auth.id
 
-					order by -count(freq)
+					order by -count(ak.freq)
 				) as kscore on kscore.id = auth.id
 				left outer join (
 					select 
 					auth.name,
 					auth.id,
-					count(freq) *10 as score
+					count(ab.freq) *10 as score
 
 					from author as auth
-					inner join authbigram as ab on ab.auth_id = auth.id
-					inner join bigram as bi on bi.id = ab.bigram_id
+					inner join freqauthbigrams as ab on ab.auth_id = auth.id
+					inner join freqbigrams as bi on bi.id = ab.bigram_id
 
 					where bi.bigram in ("""+y+""")
 
 					group by auth.name, auth.id
 
-					order by -count(freq)
+					order by -count(ab.freq)
 				) as bscore on bscore.id = auth.id
 
 			group by auth.name, auth.id
@@ -107,17 +107,17 @@ def get_author_info_by_id(id):
 			select 
 				keyword,
 				keyword.id as key_id,
-				count(freq) as freq, 
+				count(ak.freq) as freq, 
 				auth_id 
-			from keyword as keyword
-				inner join authkeyword as ak on ak.key_id = keyword.id
+			from freqkeywords as keyword
+				inner join freqauthkeywords as ak on ak.key_id = keyword.id
 				inner join author as auth on ak.auth_id = auth.id
 			where auth.id = '''+ id +'''
 			and length(keyword) > 3
 
 			group by keyword, auth_id
 
-			order by -count(freq)
+			order by -count(ak.freq)
 
 			limit 10
 			) as keywords on keywords.auth_id = auth.ID

@@ -21,7 +21,7 @@ try:
                 'primary key(`auth_id`, `bigram_id`));')
     cur.execute('drop table if exists `bigram`;')
     cur.execute('create table `bigram` (`id` int(11) NOT NULL,'
-                '`bigram` varchar(100), primary key(`id`), INDEX(bigram));')
+                '`bigram` varchar(100), `freq` int(8) default 0, primary key(`id`), INDEX(bigram));')
     con.commit()
     cur.execute('select id1, title from authorship join author on '
             'authorship.id1 = author.id join paper on authorship.id2'
@@ -80,6 +80,7 @@ try:
                  cur.execute('insert into authbigram values (' + 
                      str(author_id) + ', ' + str(bigram_id) + ', 1)'
                      'on duplicate key update freq = freq + 1;')
+                 cur.execute('update bigram set freq = freq+1 where id = ' + str(bigram_id) +';')
              else:
                  bigram_id = max_bigram_id
                  bigrams[stem_token] = max_bigram_id
@@ -87,7 +88,7 @@ try:
                      str(author_id) + ', ' + str(bigram_id) + ', 1)'
                      'on duplicate key update freq = freq + 1;')
                  cur.execute('insert into bigram values (' + str(max_bigram_id) + 
-                     ', \'' + stem_token + '\');')
+                     ', \'' + stem_token + '\', 1);')
                  max_bigram_id = max_bigram_id + 1
 
 except mdb.Error, e:

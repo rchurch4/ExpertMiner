@@ -2,10 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from forms import SearchForm
-from models import Person
+
 from stemming.porter2 import stem
+from nltk.corpus import stopwords
 
 import sql
+
+stop = stopwords.words('english')
 
 # Create your views here.
 
@@ -30,13 +33,15 @@ def results(request):
 			# CHANGE TO STEMMED WORDS
 			stemmed_query_list = []
 			for x in query_list:
-				stemmed_query_list.append(stem(x))
+				if x not in stop:
+					stemmed_query_list.append(stem(x))
 			
 			# CREATE BIGRAMS OUT OF INDIVIDUAL TERMS
 			stemmed_bigram_list = []
 			i = 0
-			while i < len(stemmed_query_list)-1:
-				stemmed_bigram_list.append(stemmed_query_list[i]+stemmed_query_list[i+1])
+			while i < len(query_list)-1:
+				if query_list[i] not in stop and query_list[i+1] not in stop:
+					stemmed_bigram_list.append(stem(query_list[i])+'$'+stem(query_list[i+1]))
 				i+=1
 
 			# COMBINE BIGRAMS AND STEMMED KEYWORDS
