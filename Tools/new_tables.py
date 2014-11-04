@@ -9,7 +9,7 @@ try:
 
     cur = con.cursor()
     cur.execute('drop table if exists `keyword`;')
-    cur.execute('create table `keyword` (`id` int(11) NOT NULL, `keyword` varchar(100), `freq` int(8) default 0,'
+    cur.execute('create table `keyword` (`id` int(11) NOT NULL, `keyword` varchar(250), `freq` int(8) default 0,'
                 'primary key (`id`), INDEX(keyword));')
     cur.execute('drop table if exists `authkeyword`;')
     cur.execute('create table `authkeyword` (`auth_id` int(11) NOT NULL,'
@@ -21,7 +21,7 @@ try:
                 'primary key(`auth_id`, `bigram_id`));')
     cur.execute('drop table if exists `bigram`;')
     cur.execute('create table `bigram` (`id` int(11) NOT NULL,'
-                '`bigram` varchar(100), `freq` int(8) default 0, primary key(`id`), INDEX(bigram));')
+                '`bigram` varchar(250), `freq` int(8) default 0, primary key(`id`), INDEX(bigram));')
     con.commit()
     cur.execute('select id1, title from authorship join author on '
             'authorship.id1 = author.id join paper on authorship.id2'

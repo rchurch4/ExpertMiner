@@ -65,6 +65,7 @@ def search_for_keywords (keys, bigrams):
 					group by auth.name, auth.id
 
 					order by -count(ak.freq)
+					limit 100
 				) as kscore on kscore.id = auth.id
 				left outer join (
 					select 
@@ -81,6 +82,7 @@ def search_for_keywords (keys, bigrams):
 					group by auth.name, auth.id
 
 					order by -count(ab.freq)
+					limit 100
 				) as bscore on bscore.id = auth.id
 
 			group by auth.name, auth.id

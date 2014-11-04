@@ -17,7 +17,8 @@ try:
 	cur.execute('drop table if exists `authorship`;')
 	cur.execute('create table `authorship` (`id` int(11) NOT NULL, `id1` int(11) NOT NULL, `id2` int(11) NOT NULL, primary key (`id`));')
 	con.commit()
-	
+	con.close()
+
 	print 'DBs recreated'
 
 	tree = ET.parse('dblp.xml')      
@@ -31,6 +32,8 @@ try:
 
 	regex = re.compile('[^a-zA-Z\s]')
 
+
+	con = mdb.connect('localhost', 'root', '', 'dblp');	
 	print 'Starting Parse'
 									   
 	for ip in root.iter('inproceedings'):  
