@@ -4,4 +4,4 @@ select *
 
 from bigram
 
-where bigram.freq > 3 and length(bigram.bigram) > 5
+where bigram.freq > 6 and length(bigram.bigram) > 5
