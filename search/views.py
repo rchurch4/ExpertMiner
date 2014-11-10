@@ -79,7 +79,11 @@ def author_profile(request):
 	auth_id = auth_id[16:]
 	auth_id = auth_id[:len(auth_id)-1]
 
-	author_info = sql.get_author_info_by_id(auth_id)
-	author_info = author_info[0]
+	author_papers = sql.get_author_papers_by_id(auth_id)[0]
+	author_keywords = sql.get_author_keywords_by_id(auth_id)[0]
+	author_bigrams = sql.get_author_bigrams_by_id(auth_id)[0]
+
 	print author_info
-	return render(request, 'search/authorprofile.html', {'author_info':author_info})
+	return render(request, 'search/authorprofile.html', {'author_papers':author_papers, 'author_keywords':author_keywords, 'author_bigrams':author_bigrams})
+
+	

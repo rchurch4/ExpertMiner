@@ -96,34 +96,12 @@ def search_for_keywords (keys, bigrams):
 
 # END SEARCH_FOR_KEYWORDS
 
-def get_author_info_by_id(id):
+# BEGIN AUTHOR INFO BY ID QUERIES
+
+def get_author_papers_by_id(id):
 	cursor = connection.cursor()
 
 	query = '''
-			select
-				auth.name,
-				keywords.keyword as kw1,
-				papers.title as p1
-			from author as auth
-			inner join (
-			select 
-				keyword,
-				keyword.id as key_id,
-				count(ak.freq) as freq, 
-				auth_id 
-			from freqkeywords as keyword
-				inner join freqauthkeywords as ak on ak.key_id = keyword.id
-				inner join author as auth on ak.auth_id = auth.id
-			where auth.id = '''+ id +'''
-			and length(keyword) > 3
-
-			group by keyword, auth_id
-
-			order by -count(ak.freq)
-
-			limit 10
-			) as keywords on keywords.auth_id = auth.ID
-			inner join (
 			select 
 				paper.title, 
 				paper.id as paper_id,
@@ -137,12 +115,60 @@ def get_author_info_by_id(id):
 			order by -year
 
 			limit 10
-			) as papers on papers.auth_id = auth.ID
-			
-			group by auth.ID
 			'''
 	# print query
 	cursor.execute(query)
 	return dictfetchall(cursor)
 
-# END get_author_info_by_id
+def get_author_keywords_by_id(id):
+	cursor = connection.cursor()
+
+	query = '''
+			select 
+				keyword,
+				keyword.id as key_id,
+				ak.freq as freq,
+				auth.name, 
+				auth_id 
+			from freqkeywords as keyword
+				inner join freqauthkeywords as ak on ak.key_id = keyword.id
+				inner join author as auth on ak.auth_id = auth.id
+			where auth.id = '''+ id +'''
+			and length(keyword) > 2
+
+			#group by keyword
+
+			order by -ak.freq
+
+			limit 10
+			'''
+	# print query
+	cursor.execute(query)
+	return dictfetchall(cursor)
+
+def get_author_bigrams_by_id(id):
+	cursor = connection.cursor()
+
+	query = '''
+			select 
+				bigram,
+				bigram.id as bigram_id,
+				ab.freq as freq,
+				auth.name, 
+				auth_id 
+			from freqbigrams as bigram
+				inner join freqauthbigrams as ab on ab.bigram_id = bigram.id
+				inner join author as auth on ab.auth_id = auth.id
+			where auth.id = '''+ id +'''
+			and length(bigram) > 5
+
+			#group by bigram, auth_id
+
+			order by -ak.freq
+
+			limit 10
+			'''
+	# print query
+	cursor.execute(query)
+	return dictfetchall(cursor)
+# END AUTHOR INFO BY ID QUERIES
