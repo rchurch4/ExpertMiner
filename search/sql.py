@@ -54,7 +54,7 @@ def search_for_keywords (keys, bigrams):
 					select 
 					auth.name,
 					auth.id,
-					count(ak.freq) as score
+					ak.freq as score
 
 					from author as auth
 					inner join freqauthkeywords as ak on ak.auth_id = auth.id
@@ -64,14 +64,14 @@ def search_for_keywords (keys, bigrams):
 
 					group by auth.name, auth.id
 
-					order by -count(ak.freq)
+					order by -ak.freq
 					limit 100
 				) as kscore on kscore.id = auth.id
 				left outer join (
 					select 
 					auth.name,
 					auth.id,
-					count(ab.freq) *10 as score
+					ab.freq as score
 
 					from author as auth
 					inner join freqauthbigrams as ab on ab.auth_id = auth.id
@@ -81,7 +81,7 @@ def search_for_keywords (keys, bigrams):
 
 					group by auth.name, auth.id
 
-					order by -count(ab.freq)
+					order by -ab.freq
 					limit 100
 				) as bscore on bscore.id = auth.id
 
@@ -127,7 +127,7 @@ def get_author_info_by_id(id):
 			select 
 				paper.title, 
 				paper.id as paper_id,
-				paper.year, 
+				paper.year,
 				auth.id as auth_id 
 			from paper as paper
 				inner join authorship as ak on ak.id2 = paper.id

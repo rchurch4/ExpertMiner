@@ -66,7 +66,7 @@ try:
 	cur.execute('drop table if exists `author`;')
 	cur.execute('create table `author` (`id` int(11) NOT NULL, `name` text, primary key (`id`));')
 	cur.execute('drop table if exists `paper`;')
-	cur.execute('create table `paper` (`id` int(11) NOT NULL, `title` text, primary key (`id`));')
+	cur.execute('create table `paper` (`id` int(11) NOT NULL, `title` text, `year` int(4), primary key (`id`));')
 	cur.execute('drop table if exists `authorship`;')
 	cur.execute('create table `authorship` (`id` int(11) NOT NULL, `id1` int(11) NOT NULL, `id2` int(11) NOT NULL, primary key (`id`));')
 	con.commit()
@@ -91,9 +91,9 @@ try:
 	#												 #
 	##################################################
 
-	max_paper_id = 1
-	max_auth_id = 1
-	max_ship_id = 1
+	max_paper_id = 1000001
+	max_auth_id = 1000001
+	max_ship_id = 1000001
 	authors = {}
 	regex = re.compile('[^a-zA-Z\s]')
 
@@ -158,9 +158,17 @@ try:
 				if nextLine.startswith('<title>'):
 					paper = remove_tags(nextLine)
 					paper = regex.sub('', paper)
+					nextLine = xml.readline()
+					while not nextLine.startswith('<year>') and '</in' not in nextLine and '</art' not in nextLine:
+						nextLine = xml.readline()
+
 					#print str(max_paper_id) + ' ' + paper
 					# ADD PAPER TO DB
-					cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '");')
+					if nextLine.startswith('<year>'):
+						year = remove_tags(nextLine)
+						cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", ' + str(year) + ');')
+					else:
+						cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", 1900);')
 
 				nextLine = xml.readline()
 				total_lines +=1
