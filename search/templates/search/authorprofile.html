@@ -17,21 +17,29 @@
 	</div>
 
 	<div id='info'>
-		<h1>{{author_keywords.name}}</h1>
-		<h2>Top Bigrams</h2>
-		<ul>
-			{% for row in author_bigrams %}
-				<li>{{ row.bigram }}, {{ row.freq }}</li>
-		</ul>
-
-		<h2>Top Keywords</h2>
-		<ul>
-			{% for row in author_keywords %}
-				<li>{{ row.keyword }}, {{ row.freq }}</li>
-		</ul>
-		<h2>Most Recent Papers</h2>
-		<ul>
-			{% for row in author_papers %}
-				<li>{{ row.title }}, {{ row.year }}</li>
-		</ul>
+		<h1>{{author_name}}</h1>
+		<div id ='top_bigrams'>
+			<h2>Top Bigrams</h2>
+			<ul>
+				{% for row in author_bigrams %}
+					<li>{{ row.bigram }}, {{ row.freq }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div id ='top_keywords'>
+			<h2>Top Keywords</h2>
+			<ul>
+				{% for row in author_keywords %}
+					<li>{{ row.keyword }}, {{ row.freq }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div id ='top_papers'>
+			<h2>Most Recent Papers</h2>
+			<ul>
+				{% for row in author_papers %}
+					<li>{{ row.title }}, {{ row.year }}</li>
+				{% endfor %}
+			</ul>
+		</div>
 	</div>

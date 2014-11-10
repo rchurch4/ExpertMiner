@@ -165,3 +165,17 @@ input:active {
 	font-size: 20pt;
 }
 
+#top_bigrams {
+	position: relative;
+	float: left;
+}
+
+#top_keywords {
+	position: absolute;
+	left: 300px;
+
+}
+
+#top_papers {
+	clear: both;
+}

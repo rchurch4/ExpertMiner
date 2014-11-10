@@ -62,7 +62,7 @@ def search_for_keywords (keys, bigrams):
 
 					where kw.keyword in ("""+x+""")
 
-					group by auth.name, auth.id
+					group by auth.name, auth.id, kw.id
 
 					order by -ak.freq
 					limit 100
@@ -71,7 +71,7 @@ def search_for_keywords (keys, bigrams):
 					select 
 					auth.name,
 					auth.id,
-					ab.freq as score
+					ab.freq * 10 as score
 
 					from author as auth
 					inner join freqauthbigrams as ab on ab.auth_id = auth.id
@@ -79,7 +79,7 @@ def search_for_keywords (keys, bigrams):
 
 					where bi.bigram in ("""+y+""")
 
-					group by auth.name, auth.id
+					group by auth.name, auth.id, bi.id
 
 					order by -ab.freq
 					limit 100
@@ -164,7 +164,7 @@ def get_author_bigrams_by_id(id):
 
 			#group by bigram, auth_id
 
-			order by -ak.freq
+			order by -ab.freq
 
 			limit 10
 			'''
