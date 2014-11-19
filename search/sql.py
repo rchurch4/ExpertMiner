@@ -29,7 +29,60 @@ def search_for_author (name):
 
 # END SEARCH_FOR_AUTHOR
 
-def search_for_keywords (keys, bigrams):
+def search_for_keywords (keys):
+	cursor = connection.cursor()
+
+	x = ""
+	for k in keys:
+		x += '\'' + k + '\', '
+	x = x[:len(x)-2]
+
+	query = """
+		select 
+		auth.name,
+		auth.id,
+		ak.freq as score
+		from author as auth
+		inner join freqauthkeywords as ak on ak.auth_id = auth.id
+		inner join freqkeywords as kw on kw.id = ak.key_id
+		where kw.keyword in ("""+x+""")
+		group by auth.name, auth.id, kw.id
+		order by -ak.freq
+		limit 100
+	"""
+
+	cursor.execute(query)
+	return dictfetchall(cursor)
+
+def search_for_bigrams (bigrams):
+	cursor = connection.cursor()
+
+	y = ""
+	for k in bigrams:
+		y += '\'' + k + '\', '
+	y = y[:len(y)-2]
+
+	query = """
+		select 
+		auth.name,
+		auth.id,
+		ab.freq as score
+
+		from author as auth
+		inner join freqauthbigrams as ab on ab.auth_id = auth.id
+		inner join freqbigrams as bi on bi.id = ab.bigram_id
+
+		where bi.bigram in ("""+y+""")
+
+		group by auth.name, auth.id, bi.id
+
+		order by -ab.freq
+		limit 100
+	"""
+	cursor.execute(query)
+	return dictfetchall(cursor)
+
+def search_for_both (keys, bigrams):
 	cursor = connection.cursor()
 
 	x = ""
@@ -65,7 +118,7 @@ def search_for_keywords (keys, bigrams):
 					group by auth.name, auth.id, kw.id
 
 					order by -ak.freq
-					limit 100
+					limit 1000
 				) as kscore on kscore.id = auth.id
 				left outer join (
 					select 
@@ -82,7 +135,7 @@ def search_for_keywords (keys, bigrams):
 					group by auth.name, auth.id, bi.id
 
 					order by -ab.freq
-					limit 100
+					limit 1000
 				) as bscore on bscore.id = auth.id
 
 			group by auth.name, auth.id

@@ -168,14 +168,43 @@ input:active {
 #top_bigrams {
 	position: relative;
 	float: left;
+	height: 400px;
+	clear:both;
 }
 
 #top_keywords {
-	position: absolute;
+	position: relative;
+	float: left;
 	left: 300px;
 
 }
 
 #top_papers {
 	clear: both;
+}
+
+#bigrams {
+	position: relative;
+	float: left;
+	clear:both;
+}
+
+#keywords {
+	position: relative;
+	float: left;
+	left: 300px;
+}
+
+#auth_name {
+	position: relative;
+	float:left;
+}
+
+#auth_pic {
+	position: relative;
+	float: left;
+	left: 300px;
+	height:100px;
+	border: solid 5px;
+	border-color: red;
 }

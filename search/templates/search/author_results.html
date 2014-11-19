@@ -20,20 +20,9 @@
 	{% endfor %}
 	</ul>
 	<h2>Your search returned: </h2>
-	<div id = 'bigrams'>
-	<h3>By Bigrams</h3>
 		<ul>
-		{% for term in bigram_author_list %}
+		{% for term in returned_list %}
 			<li><a href = '../author_profile/{{term.id}}/'> {{ term.name }}{% if term.score %}, {{term.score}} {% endif %} </a></li>
 		{% endfor %}
 		</ul>
-	</div>
-	<div id = 'keywords'>
-		<h3>By Keywords</h3>
-		<ul>
-		{% for term in keyword_author_list %}
-			<li><a href = '../author_profile/{{term.id}}/'> {{ term.name }}{% if term.score %}, {{term.score}} {% endif %} </a></li>
-		{% endfor %}
-		</ul>
-	</div>
 </body>

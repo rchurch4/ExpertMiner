@@ -50,12 +50,14 @@ def results(request):
 			if len(stemmed_bigram_list) == 0:
 				stemmed_bigram_list = ['']
 
-			author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '778977'}]
-			author_list += sql.search_for_keywords(stemmed_query_list, stemmed_bigram_list)
+			keyword_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1095061'}]
+			bigram_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1095061'}]
+			keyword_author_list += sql.search_for_keywords(stemmed_query_list)
+			bigram_author_list += sql.search_for_bigrams(stemmed_bigram_list)
 			#print author_list[0]
 			# Search the database of people on query_list
 			# Assemble best 5 people from each group
-		return render(request, 'search/results.html', {"returned_list":author_list, "query_list":final_query_list})
+		return render(request, 'search/results.html', {"keyword_author_list":keyword_author_list, "bigram_author_list":bigram_author_list, "query_list":final_query_list})
 	return HttpResponseRedirect('/')
 
 def author_search(request):
@@ -64,9 +66,9 @@ def author_search(request):
 		if form.is_valid():
 			query_list = []
 			authname = form.cleaned_data['query']
-			author_list = [{'name': u'Evimaria Terzi', 'id': '778977'}]
+			author_list = [{'name': u'Evimaria Terzi', 'id': '1095061'}]
 			author_list += sql.search_for_author(authname)
-			return render(request, 'search/results.html', {"returned_list":author_list, "query_list":[authname]})
+			return render(request, 'search/author_results.html', {"returned_list":author_list, "query_list":[authname]})
 	return HttpResponseRedirect('/')
 
 def authorlist(request):

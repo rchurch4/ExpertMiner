@@ -17,8 +17,9 @@
 	</div>
 
 	<div id='info'>
-		<h1>{{author_name}}</h1>
-		<div id ='top_bigrams'>
+		<h1 id='auth_name'>{{author_name}}</h1>
+		<img id='auth_pic' src="{% static 'search/images/sanaz.jpg' %}" alt='Sanaz is god.' >
+		<div id='top_bigrams'>
 			<h2>Top Bigrams</h2>
 			<ul>
 				{% for row in author_bigrams %}
@@ -26,7 +27,7 @@
 				{% endfor %}
 			</ul>
 		</div>
-		<div id ='top_keywords'>
+		<div id='top_keywords'>
 			<h2>Top Keywords</h2>
 			<ul>
 				{% for row in author_keywords %}
@@ -34,7 +35,7 @@
 				{% endfor %}
 			</ul>
 		</div>
-		<div id ='top_papers'>
+		<div id='top_papers'>
 			<h2>Most Recent Papers</h2>
 			<ul>
 				{% for row in author_papers %}

@@ -117,6 +117,8 @@ try:
 
 		# FIND ALL INPROCEEDINGS AND INCOLLECTIONS
 		if nextLine.startswith('<in') or nextLine.startswith('<article'):
+			paper = ''
+			year = 1900
 			paper_count += 1
 			if (paper_count % 10000 == 0):
 				print paper_count
@@ -154,24 +156,20 @@ try:
 					#print str(max_ship_id) + ' ' + str(auth_id) + ' ' + str(max_paper_id)
 					max_ship_id +=1
 
+				if nextLine.startswith('<year>'):
+					year = remove_tags(nextLine)
+
 				# IF TITLE, PROCESS PAPER
 				if nextLine.startswith('<title>'):
 					paper = remove_tags(nextLine)
 					paper = regex.sub('', paper)
-					nextLine = xml.readline()
-					while not nextLine.startswith('<year>') and '</in' not in nextLine and '</art' not in nextLine:
-						nextLine = xml.readline()
-
-					#print str(max_paper_id) + ' ' + paper
-					# ADD PAPER TO DB
-					if nextLine.startswith('<year>'):
-						year = remove_tags(nextLine)
-						cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", ' + str(year) + ');')
-					else:
-						cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", 1900);')
 
 				nextLine = xml.readline()
 				total_lines +=1
+
+			# ADD PAPER TO DB
+			if paper != '':
+				cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", '+ str(year) + ');')
 			max_paper_id += 1
 			nextLine = xml.readline()
 			total_lines +=1
@@ -186,7 +184,9 @@ except mdb.Error, e:
 finally:    
 	cur.close()
 
-	print paper_count
+	print 'Papers: ' + str (paper_count)
+	print 'Authors: ' + str (max_auth_id-1000000)
+	print
 	print 'Done'
 
 	if con:    
