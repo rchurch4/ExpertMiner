@@ -3,6 +3,7 @@
 <head>
 	<title>People Search Engine</title>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="{% static 'search/javascript/basic.js' %}" name="basic"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'search/css/style.css' %}" />
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 </head>
@@ -11,21 +12,19 @@
 	<div id='top'>
 		<h1>Boston University</h1>
 		<h2><a id = 'keysearch' href='/'>Search by Keywords</a></h2>
-		<h2><a id = 'authsearch' href='../authors/'>Search by Author Name</a></h2>
-		<h2><a id = 'teamsearch' href='../teams/'>Search for a Team</a></h2>
+		<h2><a id = 'authsearch' href='/authors/'>Search by Author Name</a></h2>
+		<h2><a id = 'teamsearch' href='/teams/'>Search for a Team</a></h2>
 		<h5>Designed by Rob Churchill &amp; Behzad Golshan</h5>
 	</div>
 	<br>
-	<h1> You searched for: </h1>
-	<ul>
-	{% for term in query_list %}
-		<li>{{ term }}</li>
-	{% endfor %}
-	</ul>
-	<h2>Your search returned: </h2>
-		<ul>
-		{% for term in returned_list %}
-			<li><a href = '../author_profile/{{term.id}}/'> {{ term.name }}{% if term.score %}, {{term.score}} {% endif %} </a></li>
-		{% endfor %}
-		</ul>
+	<form name="seachbear" action="/team_search/" method="POST">
+		{% csrf_token %}
+		{{ form }}
+		<input id="add_button" type="button" value="Add"></input>
+		<input id="search_button" type="submit" value="Search"></input>
+		<div id="queries">
+			No Terms in the Query.
+		</div>
+	</form>
+	
 </body>

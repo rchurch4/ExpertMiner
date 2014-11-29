@@ -14,5 +14,7 @@ urlpatterns = [
 	url(r'^author_list/', 'search.views.authorlist', name='authors'),
 	url(r'^author_search/', 'search.views.author_search', name='author search'),
 	url(r'^author_profile/[0-9]{7}/', 'search.views.author_profile', name='author profile'),
+    url(r'^teams/', 'search.views.team_index', name='team search'),
+    url(r'^team_search/', 'search.views.team_search', name='team search'),
 ]
 

@@ -80,7 +80,7 @@ $(document).ready(function () {
 			for (var i = 0; i < queries.length; i++) {
 				if (queries[i].length < 50 & queries[i].indexOf('.') === -1 & queries[i].indexOf(',') === -1 & queries[i].indexOf('\'') === -1 
 					& queries[i].indexOf('"') === -1 & queries[i].indexOf('(') === -1 & queries[i].indexOf(')') === -1 & queries[i].indexOf('*') === -1) {
-					x += queries[i]+" ";
+					x += queries[i]+";";
 				}
 			}
 			$("#id_query").val(x);

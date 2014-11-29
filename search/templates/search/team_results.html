@@ -23,9 +23,15 @@
 	{% endfor %}
 	</ul>
 	<h2>Your search returned: </h2>
+	<div id = 'Teams'>
+	<h3>Teams</h3>
 		<ul>
-		{% for term in returned_list %}
-			<li><a href = '../author_profile/{{term.id}}/'> {{ term.name }}{% if term.score %}, {{term.score}} {% endif %} </a></li>
+		{% for team in team_list %}
+			<h3>Team</h3>
+			{% for author in team%}
+				<li><a href = '../author_profile/{{author.0}}/'> {{ author.1 }}</a>, {% for i in author %} {{i}}, {% endfor %}</li>
+			{% endfor %}
 		{% endfor %}
 		</ul>
+	</div>
 </body>

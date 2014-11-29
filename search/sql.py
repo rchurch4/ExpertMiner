@@ -225,3 +225,91 @@ def get_author_bigrams_by_id(id):
 	cursor.execute(query)
 	return dictfetchall(cursor)
 # END AUTHOR INFO BY ID QUERIES
+
+# BEGIN GET TEAM CANDIDATES
+
+def get_team_candidates(terms):
+	bigram_query = '''
+		select author.id, author.name from author
+		inner join authbigram as ab on ab.auth_id = author.id
+		inner join bigram as bi on bi.id = ab.bigram_id
+
+		where bi.bigram = '{0}'
+
+		order by -ab.freq
+
+		limit 500;
+		'''
+
+	keyword_query = '''
+		select author.id, author.name from author
+		inner join authkeyword as ab on ab.auth_id = author.id
+		inner join keyword as bi on bi.id = ab.key_id
+
+		where bi.keyword = '{0}'
+
+		order by -ab.freq
+
+		limit 500;
+		'''
+
+	bigram_score_query = '''
+		select author.id, ifnull(ab.norm, 0) from author
+		inner join authbigram as ab on ab.auth_id = author.id
+		inner join bigram as bi on bi.id = ab.bigram_id
+
+		where bi.bigram = '{0}'
+		and author.id = '{1}';
+		'''
+
+	keyword_score_query = '''
+		select author.id, ifnull(ab.norm, 0) from author
+		inner join authkeyword as ab on ab.auth_id = author.id
+		inner join keyword as bi on bi.id = ab.key_id
+
+		where bi.keyword = '{0}'
+		and author.id = '{1}';
+		'''
+
+	cursor = connection.cursor()
+	candidate_list = []
+
+	for term in terms:
+		if '$' in term:
+			form_query = bigram_query.format(term)
+			cursor.execute(form_query)
+		else:
+			form_query = keyword_query.format(term)
+			cursor.execute(form_query)
+
+		new_candidates = cursor.fetchall()
+		for i in new_candidates:
+			if i not in candidate_list:
+				candidate_list.append(i)
+
+	candidate_scores = []
+	for i in candidate_list:
+		auth_scores = [i[0], i[1]]
+		totalscore = 0
+		covered = 0
+		for term in terms:
+			if '$' in term:
+				query = bigram_score_query.format(term, i[0])
+				cursor.execute(query)
+			else:
+				query = keyword_score_query.format(term, i[0])
+				cursor.execute(query)
+			term_score = cursor.fetchone()
+			if term_score == None:
+				term_score = (i[0], 0)
+			else:
+				covered+=1
+			totalscore += term_score[1]
+			auth_scores.append(term_score[1])
+		auth_scores.insert(2,totalscore)
+		auth_scores.insert(2,covered)
+		#print auth_scores
+		candidate_scores.append(auth_scores)
+
+	return candidate_scores
+# END GET TEAM CANDIDATES

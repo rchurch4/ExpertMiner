@@ -20,7 +20,7 @@
 	font-family: 'Open Sans Condensed', sans-serif;
 }
 
-#keysearch, #authsearch {
+#keysearch, #authsearch, #teamsearch {
 	float: left;
 	color: white;
 	position: absolute;
@@ -40,7 +40,11 @@
 	left: 500px;
 }
 
-#keysearch:hover, #authsearch:hover {
+#teamsearch {
+	left: 730px;
+}
+
+#keysearch:hover, #authsearch:hover, #teamsearch:hover {
 	text-decoration: underline;
 }
 
