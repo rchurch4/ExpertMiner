@@ -8,6 +8,9 @@ from nltk.corpus import stopwords
 
 import sql
 import maxcoverage as mc
+import maxcoveragev2 as mc2
+import maxcoveragev3 as mc3
+import maxcoveragev4 as mc4
 
 stop = stopwords.words('english')
 
@@ -61,8 +64,8 @@ def results(request):
 			if len(stemmed_bigram_list) == 0:
 				stemmed_bigram_list = ['']
 
-			keyword_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1095061'}]
-			bigram_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1095061'}]
+			keyword_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1143572'}]
+			bigram_author_list = [{'score': 'a zillion', 'name': u'Evimaria Terzi', 'id': '1143572'}]
 			keyword_author_list += sql.search_for_keywords(stemmed_query_list)
 			bigram_author_list += sql.search_for_bigrams(stemmed_bigram_list)
 			#print author_list[0]
@@ -103,34 +106,115 @@ def team_search(request):
 			candidates = sql.get_team_candidates(final_query_list)
 			print len(candidates)
 
+			if len(candidates) < 1:
+				new_query_list = []
+				for i in final_query_list:
+					if '$' in i:
+						bigram_break = i.split('$')
+						new_query_list.append(bigram_break[0])
+						new_query_list.append(bigram_break[1])
+				candidates = sql.get_team_candidates(new_query_list)
+				final_query_list = new_query_list
+
 			#DO MAX COVERAGE
 			team_list = []
 			team_scores = []
-			t1 = mc.max_coverage(candidates, 0.1, 1, 5)
+			
+			# t1 = mc.max_coverage(candidates, 0.1, 1, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 0.2, 1, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 0.5, 1, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 1, 1, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 1, 2, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 1, 0.5, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 0.2, 2, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 0.2, 3, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc.max_coverage(candidates, 0.5, 2, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+
+			# t1 = mc2.max_coverage(candidates, 0.1, 0, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc2.max_coverage(candidates, 0.1, 0.5, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc2.max_coverage(candidates, 0.1, 1, 5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 3, 0.3)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 3, 0.5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 3, 0.7)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+
+			t1 = mc3.max_coverage(candidates, 0.1, 1, 5, 0.3)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 0.2, 1, 5)
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 5, 0.5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 5, 0.7)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 0, 0.3)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 0, 0.5)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+			# t1 = mc3.max_coverage(candidates, 0.1, 1, 0, 0.7)
+			# team_list.append(t1[0])
+			# team_scores.append(t1[1])
+
+			t1 = mc4.max_coverage(candidates, 0.1, 0.7)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 0.5, 1, 5)
+			t1 = mc4.max_coverage(candidates, 0.1, 1)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 1, 1, 5)
+			t1 = mc4.max_coverage(candidates, 0.1, 1.5)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 1, 2, 5)
+
+			t1 = mc4.max_coverage(candidates, 0.3, 1)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 1, 0.5, 5)
+			t1 = mc4.max_coverage(candidates, 0.3, 1.5)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 0.2, 2, 5)
+			t1 = mc4.max_coverage(candidates, 0.3, 2)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 0.2, 3, 5)
+
+			t1 = mc4.max_coverage(candidates, 0.2, 2)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
-			t1 = mc.max_coverage(candidates, 0.5, 2, 5)
+			t1 = mc4.max_coverage(candidates, 0.2, 3)
+			team_list.append(t1[0])
+			team_scores.append(t1[1])
+			t1 = mc4.max_coverage(candidates, 0.2, 4)
 			team_list.append(t1[0])
 			team_scores.append(t1[1])
 
@@ -145,7 +229,7 @@ def author_search(request):
 		if form.is_valid():
 			query_list = []
 			authname = form.cleaned_data['query']
-			author_list = [{'name': u'Evimaria Terzi', 'id': '1095061'}]
+			author_list = [{'name': u'Evimaria Terzi', 'id': '1143572'}]
 			author_list += sql.search_for_author(authname)
 			return render(request, 'search/author_results.html', {"returned_list":author_list, "query_list":[authname]})
 	return HttpResponseRedirect('/')
@@ -164,6 +248,7 @@ def author_profile(request):
 	author_keywords = sql.get_author_keywords_by_id(auth_id)
 	author_bigrams = sql.get_author_bigrams_by_id(auth_id)
 	author_name = author_keywords[0]['name']
+	search_link = 'http://scholar.google.com/scholar?q='+author_name.replace(' ', '+')
 
-	return render(request, 'search/authorprofile.html', {'author_name':author_name, 'author_papers':author_papers, 'author_keywords':author_keywords, 'author_bigrams':author_bigrams})
+	return render(request, 'search/authorprofile.html', {'author_name':author_name, 'search_link':search_link,'author_papers':author_papers, 'author_keywords':author_keywords, 'author_bigrams':author_bigrams})
 

@@ -167,7 +167,7 @@ def get_author_papers_by_id(id):
 
 			order by -year
 
-			limit 10
+			limit 50
 			'''
 	# print query
 	cursor.execute(query)
@@ -238,7 +238,7 @@ def get_team_candidates(terms):
 
 		order by -ab.freq
 
-		limit 500;
+		limit 300;
 		'''
 
 	keyword_query = '''
@@ -250,7 +250,7 @@ def get_team_candidates(terms):
 
 		order by -ab.freq
 
-		limit 500;
+		limit 300;
 		'''
 
 	bigram_score_query = '''

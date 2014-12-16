@@ -10,7 +10,7 @@ $(document).ready(function () {
 		var input = $("#id_query").val();
 		// Checks to see if the input is valid
 		if (input.length > 0 && input != "" && input != " " && input != "-1" & input.length < 50 & input.indexOf('.') === -1 & input.indexOf(',') === -1 & input.indexOf('\'') === -1 
-					& input.indexOf('"') === -1 & input.indexOf('(') === -1 & input.indexOf(')') === -1 & input.indexOf('*') === -1) {
+					& input.indexOf('(') === -1 & input.indexOf(')') === -1 & input.indexOf('*') === -1) {
 			// Checks to see if the term has already been added
 			if (queries.indexOf(input) == -1) {
 				// Checks to see whether there are already terms in the query. If not, adds the Reset button to the beginning of the HTML
@@ -18,7 +18,14 @@ $(document).ready(function () {
 					arg_string = starting_arg_string;
 				}
 				// Adds the newest term to the query
-				queries[queries.length] = input;
+				if (input.indexOf('"') != -1) {
+					while (input.indexOf('"') != -1) {
+						input = input.replace('"', '');
+					}
+					queries[queries.length] = input;
+				} else {
+					queries[queries.length] = input.toLowerCase();
+				}
 				// Adds a button corresponding to the newest term to the HTML
 				arg_string += "<button type='button' class='term' name='"+ (queries.length) + "'>"+input+"</button>" + "<br> ";
 				// Updates the HTML

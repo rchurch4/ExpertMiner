@@ -66,13 +66,13 @@ try:
 	cur.execute('drop table if exists `author`;')
 	cur.execute('create table `author` (`id` int(11) NOT NULL, `name` text, primary key (`id`));')
 	cur.execute('drop table if exists `paper`;')
-	cur.execute('create table `paper` (`id` int(11) NOT NULL, `title` text, `year` int(4), primary key (`id`));')
+	cur.execute('create table `paper` (`id` int(11) NOT NULL, `title` text, `year` int(4), `conf` text, primary key (`id`));')
 	cur.execute('drop table if exists `authorship`;')
 	cur.execute('create table `authorship` (`id` int(11) NOT NULL, `id1` int(11) NOT NULL, `id2` int(11) NOT NULL, primary key (`id`));')
 	con.commit()
 	con.close()
 
-	print 'DBs recreated'
+	# print 'DBs recreated'
 
 	##################################################
 	#												 #
@@ -96,6 +96,7 @@ try:
 	max_ship_id = 1000001
 	authors = {}
 	regex = re.compile('[^a-zA-Z\s]')
+	final_auth = ''
 
 	##################################################
 	#												 #
@@ -116,9 +117,11 @@ try:
 		# END TESTING
 
 		# FIND ALL INPROCEEDINGS AND INCOLLECTIONS
-		if nextLine.startswith('<in') or nextLine.startswith('<article'):
+		#if nextLine.startswith('<inproceedings') or nextLine.startswith('<article') or nextLine.startswith('<incollections'):
+		if '<inproceedings' in nextLine or '<article' in nextLine or '<incollections' in nextLine:
 			paper = ''
 			year = 1900
+			conf = ''
 			paper_count += 1
 			if (paper_count % 10000 == 0):
 				print paper_count
@@ -130,7 +133,7 @@ try:
 			nextLine = xml.readline()
 
 			# READ PAPER INFO UNTIL END OF CURRENT INPROCEEDINGS TAG
-			while '</in' not in nextLine and '</art' not in nextLine:
+			while '</inproceedings>' not in nextLine and '</article>' not in nextLine and '</incollections>' not in nextLine:
 				# TESTING
 				if total_lines > max_lines and testing:
 					break
@@ -148,20 +151,26 @@ try:
 						authors[auth] = max_auth_id
 						# ADD AUTHOR TO DB
 						cur.execute('insert into author values (' + str(max_auth_id) + ', "' + str(auth) + '");')
-						#print str(max_auth_id) + ' ' + auth
+						if auth == 'Behzad Golshan':
+							print str(max_auth_id) + ' ' + auth
 						max_auth_id += 1
 					auth_id = authors[auth]
 					# ADD AUTHORSHIP TO DB
 					cur.execute('insert into authorship values (' + str(max_ship_id) + ', ' + str(auth_id) + ', ' + str(max_paper_id) + ');')
-					#print str(max_ship_id) + ' ' + str(auth_id) + ' ' + str(max_paper_id)
+					if auth == 'Behzad Golshan':
+						print str(max_ship_id) + ' ' + str(auth_id) + ' ' + str(max_paper_id)
 					max_ship_id +=1
 
 				if nextLine.startswith('<year>'):
 					year = remove_tags(nextLine)
 
+				if nextLine.startswith('<crossref>'):
+					conf = remove_tags(nextLine)
+
 				# IF TITLE, PROCESS PAPER
 				if nextLine.startswith('<title>'):
 					paper = remove_tags(nextLine)
+					final_auth = paper
 					paper = regex.sub('', paper)
 
 				nextLine = xml.readline()
@@ -169,7 +178,8 @@ try:
 
 			# ADD PAPER TO DB
 			if paper != '':
-				cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", '+ str(year) + ');')
+				pass
+				cur.execute('insert into paper values (' + str(max_paper_id) + ', "' + str(paper) + '", '+ str(year) + ', "' + str(conf) + '");')
 			max_paper_id += 1
 			nextLine = xml.readline()
 			total_lines +=1
@@ -185,9 +195,9 @@ finally:
 	cur.close()
 
 	print 'Papers: ' + str (paper_count)
-	print 'Authors: ' + str (max_auth_id-1000000)
+	print 'Authors: ' + str (max_auth_id-1000001)
 	print
-	print 'Done'
+	print 'Done ' + final_auth
 
 	if con:    
 		con.commit()

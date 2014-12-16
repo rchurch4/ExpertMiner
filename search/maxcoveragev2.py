@@ -1,9 +1,9 @@
-# maxcoverage.py
+# maxcoveragev2.py
 #
 # takes in: 
 #	list of format (id, name, covered, totalscore, score1, score2, ... scoreN)
 # 	value for covering a term (0-1)
-#	multiplier for term score (0-2)
+#	tuning variable (0-1)
 #	k for the number of people on the team
 #
 # returns:
@@ -13,40 +13,6 @@
 # rchurch4@bu.edu
 
 import copy as cp
-
-# def find_low_score(l, team, boolean_list):
-# 	if False not in boolean_list:
-# 		return 0
-
-# 	team_score = [0] * len(l[0])
-# 	for t in team:
-# 		index = 4
-# 		while index < len(t):
-# 			team_score[index] += t[index]
-# 			index+=1
-
-# 	low_score = 10000
-# 	low_score_index = 0
-# 	index = 4
-# 	while index < len(team_score):
-# 		if team_score[index] < low_score:
-# 			low_score = team_score[index]
-# 			low_score_index = index
-# 		index += 1
-# 	return low_score_index
-
-# def reset_scores(l, c, x, team):
-# 	for i in l:
-# 		in_team = False
-# 		for t in team:
-# 			if t[0] == i[0]:
-# 				in_team == True
-# 		if in_team == False:
-# 			index = 4
-# 			while index < len(i):
-# 				if i[index] != 0:
-# 					i[3] += (i[index]*x + c)
-# 				index += 1
 
 def compute_score(team, c, x):
 	team_score = [0] * (len(team[0])-3)
@@ -63,7 +29,7 @@ def remove_term (l, c, index, boolean_list):
 	#removes score of term already covered:
 	for i in l:
 		if i[index] != 0:
-			i[3] -= (c + i[index])
+			i[3] -= ((1-x)*c + x*i[index])
 
 	#sets term to true
 	boolean_list[index] = True
@@ -72,7 +38,7 @@ def remove_term (l, c, index, boolean_list):
 
 def max_coverage (m, c, x, k):
 	l = cp.deepcopy(m)
-	
+
 	boolean_list = [False] * (len(l[0]))
 	boolean_list[0] = True
 	boolean_list[1] = True
@@ -81,7 +47,7 @@ def max_coverage (m, c, x, k):
 
 	#compute total
 	for i in l:
-		i[3] = x*i[3] + c*i[2]
+		i[3] = x*i[3] + (1-x)*c*i[2]
 	team = []
 
 	#pick team

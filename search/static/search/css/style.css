@@ -204,10 +204,26 @@ input:active {
 	float:left;
 }
 
+#scholar_link {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-style: bold;
+	position: relative;
+	float: left;
+	padding:20px;
+	top:-5px;
+}
+
+#scholar_link a {
+	text-decoration: none;
+}
+
+#scholar_link a:hover {
+	text-decoration: underline;
+}
+
 #auth_pic {
 	position: relative;
 	float: left;
-	left: 300px;
 	height:100px;
 	border: solid 5px;
 	border-color: red;
